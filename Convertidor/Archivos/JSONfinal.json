@@ -1,0 +1,28 @@
+{
+  "usuarios": [
+    {
+      "codigo": "1",
+      "usuario": "david",
+      "contrasena": "david",
+      "correo": "david",
+      "intentos": "0",
+      "bloqueo": "0"
+    },
+    {
+      "codigo": "2",
+      "usuario": "root",
+      "contrasena": "root",
+      "correo": "root",
+      "intentos": "0",
+      "bloqueo": "0"
+    },
+    {
+      "codigo": "3",
+      "usuario": "pep",
+      "contrasena": "pep",
+      "correo": "vvvvvv",
+      "intentos": "0",
+      "bloqueo": "0"
+    }
+  ]
+}

@@ -1,0 +1,418 @@
+@charset "ISO-8859-1";
+
+.pie {position: absolute; right: 0; bottom: 0; text-align: center;
+     font-size: 50px; -webkit-text-stroke: 1px black;
+}
+
+h4 {
+	color:yellow; text-align: center;
+}
+
+.espacio {
+	background-color: red;
+	
+}
+
+.manU {
+    width: 50%;
+    height: 95%;
+    margin-left: 15%;
+    margin-top: 4%;
+    border: 3px solid blue; 
+    background-color:rgba(0,25,30,0.7);
+}
+
+.parrafoA {
+    margin-left: 10%;
+    color: yellow;
+    text-align: left;
+    font-size: 25px;   
+    font-family: impact
+}
+
+.centrar-form{
+ margin: 50px auto;
+ float:none;
+}
+
+.enlace {
+	margin: 50px;
+}
+
+section {margin-left: auto;
+          margin-right: auto;
+          margin-top: 3px;
+          margin-bottom: 3px;
+          text-align: center; }
+          
+body {
+	background-image: url("../Img/index.jpg");
+        background-size: cover;       
+}
+
+h1, h3 {
+	text-align: center; color:yellow;
+}
+
+.te {
+    color: black;
+    font-family: "impact";
+    -webkit-text-stroke: 2px white;
+}
+
+.inicio {
+    background-color:rgba(0,0,0,0.8);
+    position: absolute;
+    width: 250px;
+    height: 97%;
+    border: 3px solid blue;
+}
+
+.sesion {
+    background-color:rgba(0,0,0,0.8);
+    position: absolute;
+    width: 20%;
+    height: 50%;
+    margin-top: 1%;
+    right: 0;
+    border: 3px solid blue;
+}
+
+.topL {
+   background-color:rgba(0,0,0,0.8); 
+   position: absolute;
+   top: 2%;
+    width: 20%;
+    height: 95%;
+    right: 15%;
+    border: 3px solid blue 
+}
+
+.luchP {
+   background-color:rgba(255,255,126,0.5);    
+    width: 95%;
+    height: 40%;    
+    border: 3px solid yellow; 
+    margin-top: 2%;
+    text-align: center;
+    margin-bottom: 5%;
+    margin-left: 4px
+}
+
+.luchS {
+   background-color:rgba(244,0,0,0.5);    
+    width: 95%;
+    height: 30%;
+    text-align: center;    
+    border: 3px solid red;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    margin-left: 4px
+}
+
+.luchT {
+   background-color:rgba(0,122,0,0.5);    
+    width: 95%;
+    height: 20%; 
+    text-align: center;
+    border: 3px solid green;
+    margin-top: 2%;
+    margin-left: 4px    
+}
+
+.texto-encima{
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    color: rgba(180,14,160,0.5);
+    font-size: 25px;
+    font-weight: bold;
+    font-family: impact;
+    transform: translate(-50%, -50%);
+    -webkit-text-stroke: 1px white;
+}
+
+.texto-encimaM{
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: impact;
+    transform: translate(-50%, -50%);
+    -webkit-text-stroke: 1px white;
+}
+
+.texto-encimaA{
+    position: absolute;
+    top: 95%;
+    left: 50%;
+    color: rgba(126,121,32,0.5);
+    font-size: 15px;
+    font-weight: bold;
+    font-family: impact;
+    transform: translate(-50%, -50%);
+    -webkit-text-stroke: 1px white;
+}
+
+.tituloIndex {  
+    opacity: 0,9;
+}
+
+.tablaIndex {
+    width: 90%;
+    height: 80%;
+    margin-left: 5%;
+    position: absolute;
+    border-collapse: collapse;
+    border: 1px solid blue;   
+}
+
+.tablaG {
+    width: 90%;
+    height: 95%;
+    margin-left: 5%;
+    top: 2%;
+    position: absolute;
+    border-collapse: collapse;
+    border: 1px solid yellow;  
+}
+
+.divP {
+    width: 60%;
+    height: 95%;
+    margin-left: 15%;
+    margin-top: 4%;
+    border: 3px solid blue; 
+    background-color:rgba(0,0,0,0.9);
+}
+
+.bandejaD {
+  width: 80%;
+    height: 95%;
+    margin-left: 2%;
+    margin-top: 3%;
+    border: 3px solid blue; 
+    background-color:rgba(0,0,0,0.9);  
+}
+
+.usuarioD {
+    width: 90%;
+    height: 95%;
+    margin-left: 2%;
+    margin-top: 3%;
+    border: 3px solid blue; 
+    background-color:rgba(0,0,0,0.9);  
+}
+
+.partidaP {
+    width: 60%;
+    height: 95%;
+    margin-left: 2%;
+    margin-top: 3%;
+    border: 3px solid blue; 
+    background-color:rgba(0,0,0,0.9);     
+}
+
+
+
+.tdU {
+    width: 20%;
+    height: 95%;
+    font-size: 20px;
+    text-align: left
+}
+
+.tablaP {
+    width: 100%;
+    height: 90%;
+}
+
+.tdP {
+    width: 33%;
+    height: 95%;
+    font-size: 26px;
+    text-align: center;
+}
+
+.tdB {
+    width: 33%;
+    height: 95%;
+    font-size: 20px;
+    text-align: left;
+}
+
+.caja {
+    height:200px;
+    width: 98%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    text-align: left;  
+    font-size: 20px
+}
+
+.tdCam {
+    width: 33%;
+    height: 95%;
+    font-size: 26px;
+    text-align: left;
+}
+
+.tdG {
+    padding: 8px;
+    text-align: center;
+    border-bottom: 3px solid yellow; 
+    font-size: 14px;
+    color:yellow;
+}
+
+td, th {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 3px solid blue; 
+    font-size: 20px;
+    color:yellow;
+}
+
+.cerrarS {
+    background-color:rgba(0,0,0,0.8);
+    position: absolute;
+    width: 50%;
+    height: 20%;
+    text-align: center;
+    top: 30%;
+    right: 25%;
+    border: 3px solid blue;
+    color: yellow;
+    font-size: 33px; 
+    -webkit-text-stroke: 2px white;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; 
+}
+
+.volver {
+    background-color:rgba(0,0,0,0.8);
+    position: absolute;
+    width: 20%;
+    height: 10%;
+    text-align: center;
+    top: 55%;
+    right: 40%;
+    border: 4px outset blue;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+.imgYexp {
+    position: absolute;
+    margin-left: 25%;
+    width: 50%;
+    height: 95%;
+    border: 3px solid yellow;
+   background-color:rgba(0,0,0,0.8); 
+}
+
+.imagen {
+    position: absolute;
+    margin-left: 4%;
+    margin-top: 5%;
+    width: 90%;
+    height: 60%;
+    border: 3px solid yellow;
+    background-color:rgba(0,0,0,0.8);
+}
+
+
+.texto_l {
+    margin-left: 2%;
+    margin-top: 75%;
+    width: 95%;
+    height: 20%;
+    border: 3px solid black;
+    background-color:rgba(0,0,0,0.8);
+    
+}
+
+@media  screen and (max-width: 1366px) {
+   .texto_l {
+    margin-top: 60%;
+}
+}
+
+
+.crea {
+    position: absolute;
+    margin-left: 25%;
+    margin-top: 5%;
+    width: 40%;
+    height: 70%;
+    border: 3px solid blue;
+    background-color:rgba(0,0,0, 1);
+}
+
+.logo {
+    margin-left: 25%;
+    width: 45%;
+    height: 50%; 
+} 
+
+.cret {
+    color: yellow;
+    text-align: center;
+    font-size: 30px;
+}
+
+a:link {
+  color: yellow;
+}
+
+a:visited {
+  color: blue;
+}
+
+/* mouse over link */
+a:hover {
+  color: aqua;
+}
+
+/* selected link */
+a:active {
+  color: yellow;
+}
+
+h5 {
+	text-align: left; color:yellow;
+}
+
+.perfilB {
+    color: black;
+    text-align: center;
+}
+
+.boton {
+    font: bold 11px Arial;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC; 
+}
+
+.padre {
+  display: flex;
+  justify-content: center;
+}
+
+.hijo {
+  padding: 5px;
+  margin: 5px;
+}
+

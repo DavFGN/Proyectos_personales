@@ -1,0 +1,56 @@
+h4 {
+	color:yellow;
+}
+
+body {
+	background-color: blue;
+}
+
+table {
+		background-color: grey;
+		margin: auto;
+		color: blue:
+		border-collapse: collapse;
+}
+
+table, td {
+  border: 2px solid black;
+}
+.boton {
+    font: bold 11px Arial;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC; 
+}
+
+.padre {
+  display: flex;
+  justify-content: center;
+}
+.hijo {
+  padding: 5px;
+  margin: 5px;
+}
+td{
+	color: yellow;
+}
+
+h1, h2 {
+	text-align: center; color:yellow;
+}
+
+td.pintado {
+		background-color: red;
+}
+
+td.cazado {
+			background-color: black;
+}
+td.agua {
+				background-color: yellow;
+}

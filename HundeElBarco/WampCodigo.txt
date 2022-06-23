@@ -1,0 +1,43 @@
+create table tabla (
+vertical int(2),
+horizontal int(2)
+)
+;
+create table portaaviones (
+turno int(1),
+pos1 int(2),
+pos2 int(2),
+pos3 int(2),
+pos4 int(2),
+pos5 int(2)
+)
+;
+create table buque (
+turno int(1),
+pos1 int(2),
+pos2 int(2),
+pos3 int(2)
+)
+;
+create table lanchauno (
+turno int(1),
+pos1 int(2)
+)
+;
+create table lanchados (
+turno int(1),
+pos1 int(2)
+)
+;
+
+create table postablas (
+posiciones int (3)
+)
+;
+
+create table disparos ( 
+turno int(1), 
+disparo int(3)
+)
+;
+

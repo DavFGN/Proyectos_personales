@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Calendario</title>
+        <style>
+            .pedirDatos {
+                padding: 5px;
+                background-color: #26BFBF;
+            }
+            table {
+                margin: auto;
+                border-collapse: collapse;
+                width: 50%;
+                height: 50%;
+            }
+            table, td {
+                padding: 1px;
+                margin-top: 5px;
+                text-align: center;
+            }
+        </style>
+        <script>
+
+            function crear() {
+
+                var body = document.getElementsByTagName("body")[0];
+                var tabla = document.createElement("table");
+                var tblBody = document.createElement("tbody");
+
+                // Recogen los valores de los cuadrados parseados a int
+                var mes = parseInt(document.getElementById("mes").value);
+                var year = parseInt(document.getElementById("year").value);
+                // Crea un date con los mismos, poniendo 1 que indica el primer dia
+                var date = new Date(year, mes, 1);
+                // Se inicializa el array principal
+                let dias = [];
+                // 0 = lunes, 1 martes, 2 miercoles,
+                // 3 jueves, 4 viernes, 5 sabado, 6 domingo
+                let diainicial = date.getUTCDay();
+                // Conseguir el día final del anterior mes
+                var diafinal = new Date(year, mes + 1, 0).getDate();
+
+                // preparar el encabezado de la tabla
+                let textoCelda = "";
+                var fila = document.createElement("tr");
+                var celda = document.createElement("td");
+                celda.setAttribute('colSpan', '3');
+                textoCelda = document.createTextNode(date.toLocaleString('default', {month: 'long'}));
+                celda.appendChild(textoCelda);
+                fila.appendChild(celda);
+                var celda2 = document.createElement("td");
+                celda2.setAttribute('colSpan', '4');
+                textoCelda = document.createTextNode(year);
+                celda2.appendChild(textoCelda);
+                fila.appendChild(celda2);
+                tblBody.appendChild(fila);
+
+                // Se necesitan 6 filas para coger bien los datos, serían las
+                // semanas a representar
+
+                for (var i = 0; i < 6; i++) {
+
+                    // Crear array bidimensional que funciona como indice
+
+                    dias[i] = [];
+                    var fila = document.createElement("tr");
+
+                    // Si el for superior es de semanas, este es el de dias
+
+                    for (v = 0; v <= 6; v++) {
+                        var celda = document.createElement("td");
+
+                        // Si es la primera semana y el dia inicial es por ejemplo
+                        // un jueves, eso quiere decir que el lunes, martes y miercoles
+                        // son dias del mes pasado, que habrá que controlar y pintar en gris
+                        
+                        if (i === 0 && diainicial > v) {
+                        
+                        // Partiendo de la base del dia inicial es superior, necesitamos
+                        // es dia mas alejado del mes anterior, hasta que no se iguale
+                        // sigue avanzando dia a dia hasta llegar, esto se hace restando
+                        // al dia inicial la variable del bucle
+                            let diaC = diainicial - v;
+                        // Tenemos el dia por el que vamos controlado hasta llegar al 
+                        // dia inicial, por lo que se lo restamos a la fecha, que nos 
+                        // devuelve el dia del mes anterior
+                            let diaA = date.getDate() - diaC;
+                            // hecho esto, se genera una fecha nueva con el numero de 
+                            // a restar
+                            let dateB = new Date(year, mes, diaA);
+                            
+                            // Al ser un dia del mes anterior y querer guardarlo el arrays
+                            // se genera otro array dentro del array con el numero del dia
+                            // y si es gris o negro
+                            dias[i][v] = [dateB.getDate(), "gris"];
+                            textoCelda = document.createTextNode(dateB.getDate());
+                            celda.style.color = "gray";
+
+                        } else {
+                            
+                            // Si ya estamos dentro de nuestro mes, se pasa a calcular
+                            // la semana por la que estamos, cada una 7 dias, por lo que
+                            // con esto luego se puede sumar el dia
+                            let semana = i * 7;
+                            // como hay que pintar desde el principio, primero se 
+                            // resta la variable del bucle al dia inicial, para indicar
+                            // que ese dia será el primer dia de la semana
+                            let diaG = v - diainicial;
+                            
+                            // sumamos los dias calculados de la semana y el dia respectivo
+                            let diaC = semana + diaG;
+                            
+                            // Si el calculo anterior da un numero superior al dia final
+                            // significa que son dias que pertenecen al mes siguiente
+                            if (diaC >= diafinal) {
+                            
+                            // para obtener el dia real del mes siguiente, hay que restar
+                            // al numero calculado superior el dia final
+                                diaC = diaC - diafinal;
+                            // igual que arriba, se guarda en el array tridimensional
+                                dias[i][v] = [date.getDate() + diaC, "gris"];
+                                celda.style.color = "gray";
+                            } else {
+                            // se guarda en el array tridimensional en negro al ser un dia
+                            // del mes
+                                dias[i][v] = [date.getDate() + diaC, "negro"];
+                            }
+                            textoCelda = document.createTextNode(date.getDate() + diaC);
+                        }
+
+                        celda.appendChild(textoCelda);
+                        fila.appendChild(celda);
+                    }
+                    tblBody.appendChild(fila);
+                }
+
+                tabla.appendChild(tblBody);
+                body.appendChild(tabla);
+                
+                // con este comando se puede comprobar de forma comoda los arrays desde consola
+                console.table(dias);
+            }
+        </script>
+    </head>
+
+    <body>
+        <div class="pedirDatos">
+            <p>Mes: <input type="number" id="mes" min="0" max="11" value="9"> 0 = enero, 11 = diciembre</p>
+            <p>Año: <input type="number" id="year" min="1990" max="2030" value="2021"></p>
+            <p><input type="button" value="Enviar" onclick="crear();"></p>
+        </div>
+    </body>
+
+</html>

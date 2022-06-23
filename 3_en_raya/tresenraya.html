@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>3 en raya</title>
+    <style>
+        * {
+            font-family: Palatino Linotype;
+            font-weight: bold;
+        }
+
+        .activado {
+            background-color: black;
+            color: white;
+        }
+
+        .opciones {
+            width: 50%;
+            display: flex;
+            height: 100px;
+            border: 3px solid black;
+            margin: auto;
+            flex-wrap: wrap;
+        }
+
+        .item2 {
+            width: 33.3%;
+            height: 50%;
+        }
+
+        input[type="button"].item2:hover {
+            border: 2px solid black;
+        }
+
+        .contenedor {
+            width: 75%;
+            display: flex;
+            margin: auto;
+            border-radius: 10px;
+            height: 300px;
+            margin-top: 2%;
+            border: 3px solid black;
+            justify-content: center;
+        }
+
+        .item {
+            background: rgb(135, 181, 202);
+            width: 50%;
+            border: 2px solid black;
+        }
+
+        input {
+            width: 100%;
+            height: 100%;
+        }
+
+        table {
+            width: 100%;
+            height: 100%;
+        }
+
+        td {
+            border: 2px solid black;
+        }
+
+        .datos {
+            padding-left: 5px;
+        }
+
+        .pintar1 {
+            background-color: red;
+            color: white;
+        }
+
+        .pintar2 {
+            background-color: blue;
+            color: white;
+        }
+
+        .contenedor2 {
+            width: 75%;
+            margin: auto;
+            margin-top: 2%;
+            border: 3px solid black;
+            justify-content: center;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="opciones">
+        <input type="button" class="item2" id="aleatorio" value="VS ALEATORIO" onclick="modo(4)">
+        <input type="button" class="item2" id="ia" value="VS IA" onclick="modo(3)">
+        <input type="button" class="item2" id="2jugadores" value="2 JUGADORES" onclick="modo(2)">
+        <input type="button" class="item2" id="9fichas" value="9 FICHAS" onclick="modo(9)">
+        <input type="button" class="item2" id="6fichas" value="6 FICHAS" onclick="modo(6)">
+        <input type="button" class="item2" id="reset" value="RESET" onclick="modo(0)">
+    </div>
+
+    <div class="contenedor">
+
+        <div id="tablero" class="item">
+            <table>
+                <tr>
+                    <td> <input type="button" id="1" value="1" onmousedown="partida(event, 1)" disabled></td>
+                    <td> <input type="button" id="2" value="2" onmousedown="partida(event, 2)" disabled></td>
+                    <td> <input type="button" id="3" value="3" onmousedown="partida(event, 3)" disabled></td>
+                </tr>
+                <tr>
+                    <td> <input type="button" id="11" value="11" onmousedown="partida(event, 11)" disabled></td>
+                    <td> <input type="button" id="12" value="12" onmousedown="partida(event, 12)" disabled></td>
+                    <td> <input type="button" id="13" value="13" onmousedown="partida(event, 13)" disabled></td>
+                </tr>
+                <tr>
+                    <td> <input type="button" id="21" value="21" onmousedown="partida(event, 21)" disabled></td>
+                    <td> <input type="button" id="22" value="22" onmousedown="partida(event, 22)" disabled></td>
+                    <td> <input type="button" id="23" value="23" onmousedown="partida(event, 23)" disabled></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="datos item">
+            <div>
+                <h3>Tiempo de juego:</h3>
+                <h3 id="tiempoJuego"><time>00:00:00</time></h3>
+            </div>
+
+            <div>
+                <h3>Tiempo restante de jugada: </h3>
+                <progress value="0" max="15" id="progressBar"></progress>
+            </div>
+            <div style="padding-top: 30px">
+                <input type="button" style="width: 50%; height: 10%;" id="nuevo" value="Empezar de nuevo"
+                    onclick="modo(0)">
+                <h3 id="info">Aquí se muestra información de la partida</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="contenedor2">
+        <table>
+            <thead>
+                <tr>
+                    <td colspan="3">Jugador 1</td>
+                    <td colspan="3">Jugador 2/CPU</td>
+                </tr>
+            </thead>
+            <tr>
+                <td>Ganadas</td>
+                <td>Empatadas</td>
+                <td>Perdidas</td>
+                <td>Ganadas</td>
+                <td>Empatadas</td>
+                <td>Perdidas</td>
+            </tr>
+            <tr>
+                <td><span id="w1">0</span></td>
+                <td><span id="d1">0</span></td>
+                <td><span id="l1">0</span></td>
+                <td><span id="w2">0</span></td>
+                <td><span id="d2">0</span></td>
+                <td><span id="l2">0</span></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        
+        // Recoge los botones pulsados de modos
+        let nueveFichas = document.getElementById("9fichas");
+        let seisFichas = document.getElementById("6fichas");
+        let aleatorio = document.getElementById("aleatorio");
+        let ia = document.getElementById("ia");
+        let dosjugadores = document.getElementById("2jugadores");
+        let reset = document.getElementById("reset");
+
+        // Recoge los elementos para pintar resultados
+        let w1 = document.getElementById("w1");
+        let d1 = document.getElementById("d1");
+        let l1 = document.getElementById("l1");
+        let w2 = document.getElementById("w2");
+        let d2 = document.getElementById("d2");
+        let l2 = document.getElementById("l2");
+
+        // Inicializa los modos
+        let modo1 = 0;
+        let modo2 = 0;
+
+        // Array con las posiciones de las fichas
+        let opciones = [];
+        opciones.push([1, "nadie"]);
+        opciones.push([2, "nadie"]);
+        opciones.push([3, "nadie"]);
+        opciones.push([11, "nadie"]);
+        opciones.push([12, "nadie"]);
+        opciones.push([13, "nadie"]);
+        opciones.push([21, "nadie"]);
+        opciones.push([22, "nadie"]);
+        opciones.push([23, "nadie"]);
+
+
+        // Variables que sirven para indicar el tiempo actual de partida
+        let time = document.getElementById("tiempoJuego");
+        let seg = 0;
+        let minuto = 0;
+        let hora = 0;
+        var total;
+
+        // Variables del tiempo limite
+        let downloadTimer;
+        let progressBar = document.getElementById("progressBar");
+        let tiempoRestante = 15;
+
+        // variables referentes a la partida
+        let jugadorActual = 1;
+        let win = false;
+        let turno = 0;
+        let resultados = [];
+        let info = document.getElementById("info");
+
+        // Para comprobar si ha corregido bloqueado un intento de victoria
+        let contadorIa;
+
+        // Dependiendo de la variable que recibe, activa los modos de juego, fichas o resetea
+        // Case 9 y 6 = fichas
+        // Case 4 3 2 = aleatorio, ia, 2 jugadores
+        function modo(numero) {
+
+            switch (numero) {
+                case 9:
+                    modo1 = 9;
+                    nueveFichas.classList.add("activado");
+                    nueveFichas.disabled = true;
+                    seisFichas.disabled = true;
+                    break;
+                case 6:
+                    modo1 = 6;
+                    seisFichas.classList.add("activado");
+                    nueveFichas.disabled = true;
+                    seisFichas.disabled = true;
+                    break;
+                case 4:
+                    modo2 = 4;
+                    aleatorio.classList.add("activado");
+                    ia.disabled = true;
+                    dosjugadores.disabled = true;
+                    aleatorio.disabled = true;
+                    break;
+                case 3:
+                    modo2 = 3;
+                    ia.classList.add("activado");
+                    ia.disabled = true;
+                    dosjugadores.disabled = true;
+                    aleatorio.disabled = true;
+                    break;
+                case 2:
+                    modo2 = 2;
+                    dosjugadores.classList.add("activado");
+                    ia.disabled = true;
+                    dosjugadores.disabled = true;
+                    aleatorio.disabled = true;
+                    break;
+                case 0:
+                    modo1 = 0;
+                    modo2 = 0;
+                    nueveFichas.classList.remove("activado");
+                    seisFichas.classList.remove("activado");
+                    aleatorio.classList.remove("activado");
+                    ia.classList.remove("activado");
+                    dosjugadores.classList.remove("activado");
+                    nueveFichas.disabled = false;
+                    seisFichas.disabled = false;
+                    ia.disabled = false;
+                    dosjugadores.disabled = false;
+                    aleatorio.disabled = false;
+                    time.textContent = "00:00:00";
+                    seg = 0;
+                    minuto = 0;
+                    hora = 0;
+                    clearTimeout(total);
+                    progressBar.value = 0;
+                    clearInterval(downloadTimer);
+                    win = false;
+                    jugadorActual = 1;
+                    turno = 0;
+                    break;
+            }
+
+            comprobarModo();
+        }
+
+        // Comprueba que si están ya los modos activados, desbloquea las casillas
+        // Llama a la función del tiempo porque empieza la partida
+        // Si alguno o los 2 de los modos no está activado, significa que la partida
+        // no ha empezado o se ha vuelto a empezar y resetea desde el array hasta las casillas
+        function comprobarModo() {
+            var nodes = document.getElementById("tablero").getElementsByTagName('*');
+            if (modo1 > 0 && modo2 > 0) {
+                for (var i = 0; i < nodes.length; i++) {
+                    nodes[i].disabled = false;
+                }
+                EmpezarTiempo();
+
+            } else {
+                for (var i = 0; i < nodes.length; i++) {
+                    nodes[i].disabled = true;
+                    nodes[i].classList.remove("pintar1");
+                    nodes[i].classList.remove("pintar2");
+                }
+
+                for (var i = 0; i < opciones.length; i++) {
+                    opciones[i][1] = "nadie";
+                }
+            }
+
+        }
+
+        // Bloquea todas las casillas para que la partida no pueda empezar
+        function bloquearCampo() {
+            var nodes = document.getElementById("tablero").getElementsByTagName('*');
+            for (var i = 0; i < nodes.length; i++) {
+                nodes[i].disabled = true;
+            }
+        }
+
+        // Si hay ganador, guarda en el array de resultados en la primera posición al ganador
+        // y en el segundo al perdedor
+        // Si no hay ganador, es porque o se ha empatado o se ha agotado el tiempo y hay que 
+        // dar por ganador al jugador que no estaba activo.
+        // Al final pinta, recorre el array de resultados sumando los ganadores, perdedores y empates
+        function verificarGanador() {
+
+            if (win == true) {
+
+                if (jugadorActual == 1) {
+                    resultados[resultados.length++] = ["Jugador1", "Jugador2"];
+                } else {
+                    resultados[resultados.length++] = ["Jugador2", "Jugador1"];
+                }
+
+            } else {
+                let contador = 0;
+                for (let i = 0; i < opciones.length; i++) {
+                    if (opciones[i][1].includes("jugador") == true) {
+                        contador++;
+                    }
+                }
+
+                if (contador < 8) {
+                    if (jugadorActual == 1) {
+                        resultados[resultados.length++] = ["Jugador2", "Jugador1"];
+                    } else {
+                        resultados[resultados.length++] = ["Jugador1", "Jugador2"];
+                    }
+                } else {
+                    resultados[resultados.length++] = ["Empate", "Empate"];
+                }
+            }
+
+            let j1g = 0;
+            let j2g = 0;
+            let j1l = 0;
+            let j2l = 0;
+            let je = 0;
+
+            for (let index = 0; index < resultados.length; index++) {
+                if (resultados[index][0] === "Jugador1") {
+                    j1g++;
+                    j2l++;
+                } else if (resultados[index][0] === "Jugador2") {
+                    j2g++;
+                    j1l++;
+                } else {
+                    je++;
+                }
+            }
+
+            w1.innerHTML = j1g;
+            l2.innerHTML = j2l;
+            w2.innerHTML = j2g;
+            l1.innerHTML = j1l;
+            d1.innerHTML = je;
+            d2.innerHTML = je;
+
+            if (resultados[resultados.length - 1][0].includes("jugador") == false) {
+                info.innerHTML = "Ganador: " + resultados[resultados.length - 1][0] +
+                    " -- Perdedor: " + resultados[resultados.length - 1][1];
+            } else {
+                info.innerHTML = "Empate";
+            }
+        }
+
+        // Aumenta el tiempo sumando un segundo, actualizando minutos u horas si es necesario
+        function tiempoPartida() {
+            seg++;
+            if (seg >= 60) {
+                seg = 0;
+                minuto++;
+                if (minuto >= 60) {
+                    minuto = 0;
+                    hora++;
+                }
+            }
+        }
+
+        // Partiendo de la función anterior, pinta en función de las horas, minutos y segundos
+        function pintarTiempo() {
+            tiempoPartida();
+            time.textContent = (hora > 9 ? hora : "0" + hora)
+                + ":" + (minuto > 9 ? minuto : "0" + minuto)
+                + ":" + (seg > 9 ? seg : "0" + seg);
+            EmpezarTiempo();
+        }
+
+        // Llama cada segundo al metodo pintarTiempo 
+        function EmpezarTiempo() {
+            total = setTimeout(pintarTiempo, 1000);
+        }
+
+        // En funcion de si recibe un 0 (click izquierdo) o 2 (click derecho), hace diferentes cosas
+        // En cualquier, siempre que se pulsa una casilla, empieza a contar para el tiempo límite (15s) segundo a segundo
+        // Si llega a 0, se para la partida, bloquea todo y llama a la función de elegir ganador
+
+        // Dependiendo del modo de juego seleccionado, llama a sus respectivas funciones
+        // Si recibe click derecho, solo funciona si el modo es 6 fichas y el jugador tiene 3 fichas en el campo
+        function partida(event, opcion) {
+
+            let op = document.getElementById("" + opcion + "");
+            if (event.button === 0) {
+                clearInterval(downloadTimer);
+
+                tiempoRestante = 15;
+
+                downloadTimer = setInterval(function () {
+                    if (tiempoRestante <= 0) {
+                        console.log("Tiempo finalizado");
+                        clearInterval(downloadTimer);
+                        clearTimeout(total);
+                        bloquearCampo();
+                        verificarGanador();
+                    }
+                    progressBar.value = 15 - tiempoRestante;
+                    tiempoRestante -= 1;
+                }, 1000);
+
+                if (modo1 === 9) {
+
+                    if (modo2 === 2) {
+                        dosJugadores(op, opcion);
+                    }
+
+                    if (modo2 === 3) {
+                        jugarIa(op, opcion);
+                    }
+
+                    if (modo2 === 4) {
+                        jugarAleatorio(op, opcion);
+                    }
+
+                } else {
+                    if (modo2 === 2) {
+                        let contador = 0;
+                        for (let index = 0; index < opciones.length; index++) {
+                            if (jugadorActual === 1) {
+                                if (opciones[index][1] === "jugador1") {
+                                    contador++;
+                                }
+                            } else {
+                                if (opciones[index][1] === "jugador2") {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador == 3) {
+                            info.innerHTML = "jugador " + jugadorActual +
+                                ", debes limpiar una casilla";
+                        } else {
+                            dosJugadores(op, opcion);
+                        }
+                    }
+
+                    if (modo2 === 3) {
+                        jugarIa(op, opcion);
+                    }
+
+                    if (modo2 === 4) {
+                        jugarAleatorio(op, opcion);
+                    }
+                }
+            } else if (event.button === 2) {
+                if (modo1 === 6) {
+                    let contador = 0;
+                    for (let index = 0; index < opciones.length; index++) {
+                        if (jugadorActual === 1) {
+                            if (opciones[index][1] === "jugador1") {
+                                contador++;
+                            }
+                        } else {
+                            if (opciones[index][1] === "jugador2") {
+                                contador++;
+                            }
+                        }
+                    }
+                    if (contador == 3) {
+                        op.classList.remove("pintar1");
+                        op.classList.remove("pintar2");
+                        for (let index = 0; index < opciones.length; index++) {
+                            if (opciones[index][0] === opcion) {
+                                opciones[index][1] = "nadie";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Dependiendo del jugador activa, pinta rojo o azul
+        // Solo puede pintar una casilla vacía, aqui se llega si es modo 9 fichas
+        // o en el modo 6 fichas hay menos de 3, esto se controla en el metodo partida
+        // esta funcion es solo cuando se ha asegurado de que puede pintar siguiendo las normas
+        function dosJugadores(op, opcion) {
+
+            if (jugadorActual === 1) {
+
+                for (let index = 0; index < opciones.length; index++) {
+                    if (opcion === opciones[index][0]) {
+                        let jug = opciones[index][1];
+                        if (jug.includes("jugador") === false) {
+                            opciones[index][1] = "jugador1";
+                            op.classList.add("pintar1");
+                            turno++;
+                            tres_en_raya();
+                            if (win === false) {
+                                jugadorActual = 2;
+                            }
+                        }
+                    }
+                }
+            } else {
+
+                for (let index = 0; index < opciones.length; index++) {
+                    if (opcion === opciones[index][0]) {
+                        let jug = opciones[index][1];
+                        if (jug.includes("jugador") === false) {
+                            opciones[index][1] = "jugador2";
+                            op.classList.add("pintar2");
+                            turno++;
+                            tres_en_raya();
+                            if (win === false) {
+                                jugadorActual = 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            tres_en_raya();
+        }
+
+        // Controla (como en todos los metodos) que pulsa en una casilla valida, en ese caso
+        // comprueba si hay ganador y si no, pues le pasa el testigo a la ia llamando a la funcion
+        // La ia es una version vitaminada del aleatorio, puesto que se comprueba primero si es 
+        // posible que haya un 3 en raya, en cuyo caso bloquea
+        function jugarIa(op, opcion) {
+
+            if (modo1 == 9) {
+
+                for (let index = 0; index < opciones.length; index++) {
+
+                    if (opcion === opciones[index][0]) {
+                        let jug = opciones[index][1];
+                        if (jug.includes("jugador") == false) {
+                            opciones[index][1] = "jugador1";
+                            op.classList.add("pintar1");
+                            turno++;
+                            tres_en_raya();
+                            if (win === false) {
+                                jugadorActual = 2;
+                            }
+                        } else {
+                            info.innerHTML = "No puedes elegir esa casilla";
+                        }
+                    }
+                }
+
+                iaModo9();
+
+            } else if (modo1 == 6) {
+                let arrayT = [];
+
+                for (let index = 0; index < opciones.length; index++) {
+
+                    if (opciones[index][1].includes("jugador1") == true) {
+                        arrayT.push(opciones[index]);
+                    }
+                }
+
+
+
+                if (arrayT.length < 3) {
+
+                    for (let index = 0; index < opciones.length; index++) {
+
+                        if (opcion === opciones[index][0]) {
+                            let jug = opciones[index][1];
+                            if (jug.includes("jugador") == false) {
+                                opciones[index][1] = "jugador1";
+                                op.classList.add("pintar1");
+                                turno++;
+                                tres_en_raya();
+                                if (win === false) {
+                                    jugadorActual = 2;
+                                }
+                            } else {
+                                info.innerHTML = "No puedes elegir esa casilla";
+                            }
+                        }
+                    }
+                } else {
+                    info.innerHTML = "jugador " + jugadorActual +
+                        ", debes limpiar una casilla";
+                }
+
+                if (jugadorActual == 2) {
+
+
+                    iaModo6();
+                }
+
+
+            }
+
+
+        }
+
+        // Recoge del array de opciones los jugadores que están en dichas posiciones
+        // le pasa a la función comprobarIa las posibles combinaciones de 2 posiciones
+        // que si se pone una tercera, resultaría en la victoria del jugador, el tercer
+        // parametro indica la posición, siendo 0 la posición superior izquierda y 8
+        // la inferior derecha
+        // Solo se defiende una vez, en caso de estar en posicion de 2 posibles 3 en raya
+        // solo bloquea una posibilidad, dando margen a la victoria
+        // en caso de no tener que defender nada, pinta una casilla aleatoria
+
+        function iaModo9() {
+
+            if (jugadorActual == 2 && win == false) {
+
+                let a = opciones[0][1];
+                let b = opciones[1][1];
+                let c = opciones[2][1];
+
+                let d = opciones[3][1];
+                let e = opciones[4][1];
+                let f = opciones[5][1];
+
+                let g = opciones[6][1];
+                let h = opciones[7][1];
+                let i = opciones[8][1];
+
+                contadorIa = 0;
+
+                comprobarIa(b, c, 0);
+                comprobarIa(e, i, 0);
+                comprobarIa(d, g, 0);
+
+                comprobarIa(a, c, 1);
+                comprobarIa(e, h, 1);
+
+                comprobarIa(a, b, 2);
+                comprobarIa(e, g, 2);
+                comprobarIa(f, i, 2);
+
+                comprobarIa(a, g, 3);
+                comprobarIa(e, f, 3);
+
+                comprobarIa(a, i, 4);
+                comprobarIa(b, h, 4);
+                comprobarIa(c, g, 4);
+                comprobarIa(d, f, 4);
+
+                comprobarIa(c, i, 5);
+                comprobarIa(d, e, 5);
+
+                comprobarIa(a, d, 6);
+                comprobarIa(e, c, 6);
+                comprobarIa(h, i, 6);
+
+                comprobarIa(b, e, 7);
+                comprobarIa(g, i, 7);
+
+                comprobarIa(a, e, 8);
+                comprobarIa(c, f, 8);
+                comprobarIa(g, h, 8);
+
+                if (contadorIa == 0) {
+
+                    if (turno < 9) {
+
+                        do {
+                            let random = getRandomInt(0, 8);
+                            if (opciones[random][1].includes("jugador") == false) {
+                                opciones[random][1] = "jugador2";
+                                let op2 = document.getElementById("" + opciones[random][0] + "");
+                                op2.classList.add("pintar2");
+                                turno++;
+                                tres_en_raya();
+                                if (win === false) {
+                                    jugadorActual = 1;
+                                }
+                                break;
+                            } else {
+                                if (turno >= 9) {
+                                    break;
+                                }
+                            }
+
+                        } while (true);
+
+                    } else if (modo1 == 6) {
+                    }
+
+                    tres_en_raya();
+
+                    if (win === false) {
+                        jugadorActual = 1;
+                    }
+                }
+            }
+        }
+
+        // Igual que en la funcion anterior, en este caso quita una ficha aleatoriamente en caso de ser 3 
+        // del mismo jugador2, y luego entra a pintar de forma defensiva, pudiendo volver a pintar en la misma
+        // posicion al instante de la quitada
+        function iaModo6() {
+
+            if (jugadorActual == 2 && win == false) {
+
+                let arrayT = [];
+
+                for (let index = 0; index < opciones.length; index++) {
+
+                    if (opciones[index][1].includes("jugador2") == true) {
+                        arrayT.push(opciones[index]);
+                    }
+                }
+
+                console.log(arrayT.length);
+
+                if (arrayT.length >= 3) {
+                    let random = getRandomInt(0, 2);
+
+                    for (let index = 0; index < opciones.length; index++) {
+
+                        if (opciones[index][0] == arrayT[random][0]) {
+                            console.log("quitado maquina de posición: " + opciones[index][0]);
+                            opciones[index][1] = "nadie";
+                            let op2 = document.getElementById("" + opciones[index][0] + "");
+                            op2.classList.remove("pintar2");
+                        }
+                    }
+                }
+
+                let a = opciones[0][1];
+                let b = opciones[1][1];
+                let c = opciones[2][1];
+
+                let d = opciones[3][1];
+                let e = opciones[4][1];
+                let f = opciones[5][1];
+
+                let g = opciones[6][1];
+                let h = opciones[7][1];
+                let i = opciones[8][1];
+
+                contadorIa = 0;
+
+                comprobarIa(b, c, 0);
+                comprobarIa(e, i, 0);
+                comprobarIa(d, g, 0);
+
+                comprobarIa(a, c, 1);
+                comprobarIa(e, h, 1);
+
+                comprobarIa(a, b, 2);
+                comprobarIa(e, g, 2);
+                comprobarIa(f, i, 2);
+
+                comprobarIa(a, g, 3);
+                comprobarIa(e, f, 3);
+
+                comprobarIa(a, i, 4);
+                comprobarIa(b, h, 4);
+                comprobarIa(c, g, 4);
+                comprobarIa(d, f, 4);
+
+                comprobarIa(c, i, 5);
+                comprobarIa(d, e, 5);
+
+                comprobarIa(a, d, 6);
+                comprobarIa(e, c, 6);
+                comprobarIa(h, i, 6);
+
+                comprobarIa(b, e, 7);
+                comprobarIa(g, i, 7);
+
+                comprobarIa(a, e, 8);
+                comprobarIa(c, f, 8);
+                comprobarIa(g, h, 8);
+
+                if (contadorIa == 0) {
+
+
+                    do {
+                        let random = getRandomInt(0, 8);
+                        if (opciones[random][1].includes("jugador") == false) {
+                            opciones[random][1] = "jugador2";
+                            let op2 = document.getElementById("" + opciones[random][0] + "");
+                            op2.classList.add("pintar2");
+                            turno++;
+                            tres_en_raya();
+                            if (win === false) {
+                                jugadorActual = 1;
+                            }
+                            console.log("poniendo jugador 2 en posición: " + opciones[random][0]);
+                            break;
+                        }
+
+                    } while (true);
+
+                    tres_en_raya();
+
+                    if (win === false) {
+                        jugadorActual = 1;
+                    }
+                }
+            }
+        }
+
+        // Esta funcion es llamada por cada zona del tablero para comprobar si las posiciones
+        // de las 2 primeras fichas pertenecen al jugador1, es decir, si por ejemplo le pasamos
+        // la posicion 1 y 2 del tablero, siendo la zona 3, comprobará que las 2 primeras
+        // están activas por el jugador 1, y si es asi, bloquear el 3 para evitar la derrota
+        function comprobarIa(prim, seg, zona) {
+            if (contadorIa == 0) {
+                if (prim != "nadie" && prim.includes("jugador1") == true) {
+                    if (opciones[zona][1] != "jugador2") {
+                        if (prim == seg) {
+                            pintarIa(zona);
+                            console.log("Bloqueada victoria: " + zona);
+                            contadorIa++;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Si se da el caso de tener que pintar la casilla de la funcion anterior, se llama
+        // a esta funcion con la zona para que pinte la zona, setee el array de las fichas
+        // y llama al final a la funcion 3 en raya para seguir el juego comprobando victoria
+        function pintarIa(opcion) {
+            opciones[opcion][1] = "jugador2";
+            let op2 = document.getElementById("" + opciones[opcion][0] + "");
+            op2.classList.add("pintar2");
+            turno++;
+            tres_en_raya();
+            if (win === false) {
+                jugadorActual = 1;
+            }
+        }
+
+        // Igual que el modo ia, pero en vez de controlar las posiciones, solo pone
+        // fichas aleatoriamente, y en el caso del modo 6 fichas, quitar también 1
+        // al azar antes de pintar, pudiendose dar el caso de que quite y pinte la misma
+        // en el mismo turno
+        function jugarAleatorio(op, opcion) {
+
+            if (modo1 == 9) {
+
+                for (let index = 0; index < opciones.length; index++) {
+
+                    if (opcion === opciones[index][0]) {
+                        let jug = opciones[index][1];
+                        if (jug.includes("jugador") == false) {
+                            opciones[index][1] = "jugador1";
+                            op.classList.add("pintar1");
+                            turno++;
+                            tres_en_raya();
+                            if (win === false) {
+                                jugadorActual = 2;
+                            }
+                        } else {
+                            info.innerHTML = "No puedes elegir esa casilla";
+                        }
+                    }
+                }
+
+                console.log(turno);
+
+                if (jugadorActual == 2) {
+
+                    if (turno < 9) {
+
+                        do {
+                            let random = getRandomInt(0, 8);
+                            if (opciones[random][1].includes("jugador") == false) {
+                                opciones[random][1] = "jugador2";
+                                let op2 = document.getElementById("" + opciones[random][0] + "");
+                                op2.classList.add("pintar2");
+                                turno++;
+                                tres_en_raya();
+                                if (win === false) {
+                                    jugadorActual = 1;
+                                }
+                                break;
+                            } else {
+                                if (turno >= 9) {
+                                    break;
+                                }
+                            }
+
+                        } while (true);
+
+                    } else if (modo1 == 6) {
+                    }
+
+                    tres_en_raya();
+
+                    if (win === false) {
+                        jugadorActual = 1;
+                    }
+                }
+            } else if (modo1 = 6) {
+
+                let arrayT = [];
+
+                for (let index = 0; index < opciones.length; index++) {
+
+                    if (opciones[index][1].includes("jugador1") == true) {
+                        arrayT.push(opciones[index]);
+                    }
+                }
+
+
+
+                if (arrayT.length < 3) {
+
+                    for (let index = 0; index < opciones.length; index++) {
+
+                        if (opcion === opciones[index][0]) {
+                            let jug = opciones[index][1];
+                            if (jug.includes("jugador") == false) {
+                                opciones[index][1] = "jugador1";
+                                op.classList.add("pintar1");
+                                turno++;
+                                tres_en_raya();
+                                if (win === false) {
+                                    jugadorActual = 2;
+                                }
+                            } else {
+                                info.innerHTML = "No puedes elegir esa casilla";
+                            }
+                        }
+                    }
+                } else {
+                    info.innerHTML = "jugador " + jugadorActual +
+                        ", debes limpiar una casilla";
+                }
+
+                if (jugadorActual == 2) {
+
+
+                    let arrayT = [];
+
+                    for (let index = 0; index < opciones.length; index++) {
+
+                        if (opciones[index][1].includes("jugador2") == true) {
+                            arrayT.push(opciones[index]);
+                        }
+                    }
+
+                    console.log(arrayT.length);
+
+                    if (arrayT.length >= 3) {
+                        let random = getRandomInt(0, 2);
+
+                        for (let index = 0; index < opciones.length; index++) {
+
+                            if (opciones[index][0] == arrayT[random][0]) {
+                                console.log("quitado maquina de posición: " + opciones[index][0]);
+                                opciones[index][1] = "nadie";
+                                let op2 = document.getElementById("" + opciones[index][0] + "");
+                                op2.classList.remove("pintar2");
+                            }
+                        }
+                    }
+
+
+                    do {
+                        let random = getRandomInt(0, 8);
+                        if (opciones[random][1].includes("jugador") == false) {
+                            opciones[random][1] = "jugador2";
+                            let op2 = document.getElementById("" + opciones[random][0] + "");
+                            op2.classList.add("pintar2");
+                            turno++;
+                            tres_en_raya();
+                            if (win === false) {
+                                jugadorActual = 1;
+                            }
+                            console.log("poniendo jugador 2 en posición: " + opciones[random][0]);
+                            console.table(opciones);
+                            break;
+                        }
+
+                    } while (true);
+
+                    tres_en_raya();
+
+                    if (win === false) {
+                        jugadorActual = 1;
+                    }
+                }
+
+            }
+
+        }
+
+        // Esta funcion controla si hay 3 posiciones seguidas verticales, horizontales o
+        // cruzadas por el mismo jugador, para comprobar si hay un ganador
+        
+        function tres_en_raya() {
+
+            if (turno >= 2) {
+
+                let a = opciones[0][1];
+                let b = opciones[1][1];
+                let c = opciones[2][1];
+                let d = opciones[3][1];
+                let e = opciones[4][1];
+                let f = opciones[5][1];
+                let g = opciones[6][1];
+                let h = opciones[7][1];
+                let i = opciones[8][1];
+
+
+
+                if ((a === b && a === c && b == c) ||
+                    (a == d && a == g && d == g) ||
+                    (a == e && a == i && e == i) ||
+                    (b == e && b == h && e == h) ||
+                    (c == f && c == i && f == i) ||
+                    (c == e && c == g && e == g) ||
+                    (d == e && d == f && e == f) ||
+                    (g == h && g == i && h == i)) {
+
+                    let permiso = 0;
+
+                    if (a === b && a === c && b == c) {
+                        if (a != "nadie")
+                            permiso++;
+                    }
+
+                    if (a == d && a == g && d == g) {
+                        if (a != "nadie")
+                            permiso++;
+                    }
+
+                    if (a == e && a == i && e == i) {
+                        if (a != "nadie")
+                            permiso++;
+                    }
+
+                    if (b == e && b == h && e == h) {
+                        if (b != "nadie")
+                            permiso++;
+                    }
+
+                    if (c == f && c == i && f == i) {
+                        if (c != "nadie")
+                            permiso++;
+                    }
+
+                    if (c == e && c == g && e == g) {
+                        if (c != "nadie")
+                            permiso++;
+                    }
+
+                    if (d == e && d == f && e == f) {
+                        if (d != "nadie")
+                            permiso++;
+                    }
+
+                    if (g == h && g == i && h == i) {
+                        if (g != "nadie")
+                            permiso++;
+                    }
+
+                    if (permiso > 0) {
+
+                        win = true;
+                        console.log("Ganador");
+                        clearInterval(downloadTimer);
+                        clearTimeout(total);
+                        bloquearCampo();
+                        verificarGanador();
+                        turno = 0;
+                    }
+
+                    if (turno == 9 && modo1 == 9) {
+                        verificarGanador();
+                    }
+                }
+            }
+        }
+        
+        // funcion a la que pasar un min y max para que te saque un 
+        // numero aleatorio entre ellos. Importante, imprescindible para que la maquina
+        // haga sus movimientos
+        function getRandomInt(minuto, max) {
+            return Math.floor(Math.random() * (max - minuto)) + minuto;
+        }
+
+
+    </script>
+
+</body>
+
+</html>

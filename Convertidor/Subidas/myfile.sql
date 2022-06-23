@@ -1,0 +1,1 @@
+create table pruebas_1 (codigo varchar(255), usuario varchar(255), contrasena varchar(255), correo varchar(255), intentos varchar(255), bloqueo varchar(255));insert into pruebas_1 values ("1", "david", "david", "david", "0", "0");insert into pruebas_1 values ("2", "root", "root", "root", "0", "0");insert into pruebas_1 values ("3", "pep", "pep", "vvvvvv", "0", "0");

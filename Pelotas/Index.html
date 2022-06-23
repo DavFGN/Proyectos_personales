@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Tarea 5 (canvas)</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            canvas {
+                border: 2px solid black;
+                border-radius: 20px;
+                background-color: black;
+            }
+
+            div {
+                float: right;
+                height: 225px;
+                width: 200px;
+                border: 2px solid black;
+                padding: 10px;
+                border-radius: 20px;
+                color: white;
+                background-color: black;
+            }
+
+            body {
+                background-color: cyan;
+            }
+
+            input {
+                width: 30%;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            input:hover {
+                border: 5px solid white;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <canvas id="canvas" width="600" height="600"></canvas>
+        <div>
+            <h2>CLICKS:</h2> 
+            <h3>Aciertos: <span id="aciertos">0</span></h3>
+            <h3>Fallos: <span id="fallos">0</span></h3>
+            <h3 id="tiempoJuego"><time>00:00</time></h3>
+            <h3>Bolas: <input type="button" id="boton1" onclick="add()" value="+">
+                <input type="button" id="boton2" onclick="del()" value="-">
+            </h3>
+        </div>
+
+        <script>
+
+            var canvas = document.getElementById('canvas');
+            let aciertos = document.getElementById('aciertos');
+            let fallos = document.getElementById('fallos');
+            var ctx = canvas.getContext('2d');
+            var raf, fin = false;
+            var countDownDate = new Date();
+            let time = document.getElementById("tiempoJuego");
+            let boton1 = document.getElementById('boton1');
+            let boton2 = document.getElementById('boton2');
+            let a = [];
+
+            // Creamos las bolas como objetos y las guardamos en un array
+            // Añade posiciones, velocidad, radio y color random
+            
+            for (let i = 0; i < 5; i++) {
+
+                var ball = {
+                    id: i,
+                    x: random(0, 500),
+                    y: random(0, 500),
+                    vx: random(2, 9),
+                    vy: random(2, 9),
+                    radius: random(32, 70),
+                    color: randomColor(),
+                    draw: function () {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+                        ctx.closePath();
+                        ctx.fillStyle = this.color;
+                        ctx.fill();
+                    }};
+
+                a.push(ball);
+            }
+            
+            // La siguiente función añade una bola cuando se pulsa el botón con +
+
+            function add() {
+
+                var ball = {
+                    id: a.length + 1,
+                    x: random(0, 500),
+                    y: random(0, 500),
+                    vx: random(2, 9),
+                    vy: random(2, 9),
+                    radius: random(32, 70),
+                    color: randomColor(),
+                    draw: function () {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+                        ctx.closePath();
+                        ctx.fillStyle = this.color;
+                        ctx.fill();
+                    }};
+
+                a.push(ball);
+            }
+
+            // Esta función borra una bola, dejando como mínimo una bola
+            function del() {
+                
+                if (a.length > 1) {
+                    a.pop();
+                }
+            }
+
+            // Funciones random y randomcolor son para la creación de bolas
+            
+            function random(min, max) { 
+                return Math.floor(Math.random() * (max - min + 1) + min);
+            }
+
+            function randomColor() {
+                
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+                
+            }
+
+            // Función principal
+            function draw() {
+                
+                // Si no se ha acabado el tiempo
+                
+                if (fin == false) {
+                    
+                    // Esto lo que hace es dejar el canvas limpio
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    // esto pinta las bolas una a una
+                    for (let i = 0; i < a.length; i++) {
+                        a[i].draw();
+                    }
+                    
+                    // Actualiza la posicion de las bolas en base a la velocidad
+
+                    for (let i = 0; i < a.length; i++) {
+                        a[i].x += a[i].vx;
+                        a[i].y += a[i].vy;
+                    }
+
+                    // Si la bola choca una pared, su velocidad pasa a ser inversa
+                    // para dar efecto de rebote
+                    
+                    for (let i = 0; i < a.length; i++) {
+                        if (a[i].y + a[i].vy > canvas.height || a[i].y + a[i].vy < 0) {
+                            a[i].vy = -a[i].vy;
+                        }
+                        if (a[i].x + a[i].vx > canvas.width || a[i].x + a[i].vx < 0) {
+                            a[i].vx = -a[i].vx;
+                        }
+                    }
+
+                    // comprobar si 2 bolas chocan, si es así, hacer que hagan efecto rebote
+                    // Se hace con la formula y luego invirtiendo velocidades entre
+                    // las 2 bolas afectadas
+                    
+                    for (let i = 0; i < a.length; i++) {
+
+                        for (let e = i; e < a.length; e++) {
+                            if (i != e) {
+
+
+                                var dx = a[i].x - a[e].x;
+                                var dy = a[i].y - a[e].y;
+                                var d = (dx * dx + dy * dy);
+                                if (d <= (a[i].radius + a[e].radius) * (a[i].radius + a[e].radius)) {
+
+                                    let b1 = a[i].vx;
+                                    let b2 = a[i].vy;
+                                    let b3 = a[e].vx;
+                                    let b4 = a[e].vy;
+
+                                    a[i].vx = b3;
+                                    a[i].vy = b4;
+                                    a[e].vx = b1;
+                                    a[e].vy = b2;
+
+                                }
+                            }
+                        }
+                    }
+
+                    // esto es para que la animación no se detenga
+                    raf = window.requestAnimationFrame(draw);
+                } else {
+                    
+                    // Si es el fin de partida por tiempo, borramos todas las bolas
+                    // y limpiamos el canvas
+                    a = [];
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+
+            // función para detectar donde pinchamos para saber si hemos pinchado
+            // una bola
+            function clickear(canvas, event) {
+                let rect = canvas.getBoundingClientRect();
+                let x = event.clientX - rect.left;
+                let y = event.clientY - rect.top;
+
+                let ac = false;
+                
+                // Preparamos un for recorriendo las bolas con la formula del radio 
+                // de la bola partiendo de su posicion
+                // para saber si hemos pinchado en alguna 
+                // en caso de que sí, la bola cambia de posición y velocidad de forma
+                // random
+
+                for (let i = 0; i < a.length; i++) {
+
+                    var dx = x - a[i].x;
+                    var dy = y - a[i].y;
+                    let d = Math.sqrt((dx * dx) + (dy * dy));
+                    if (d < a[i].radius) {
+                        ac = true;
+                        console.log("le has dado a la bola " + a[i].id + " con " + d + " y " + a[i].radius);
+                        a[i].x = random(0, 500);
+                        a[i].y = random(0, 500);
+                        a[i].vx = random(2, 9);
+                        a[i].vy = random(2, 9);
+                    }
+                }
+
+                // Si hubo una bola acertada o no, se actualiza el valor correspondiente
+                // en caso afirmativo, también se incrementa el tiempo 5 segundos
+                if (ac == true) {
+                    let r = aciertos.innerText;
+                    aciertos.innerText = parseInt(r) + 1;
+                    countDownDate.setSeconds(countDownDate.getSeconds() + 5);
+
+                } else {
+                    let r = fallos.innerText;
+                    fallos.innerText = parseInt(r) + 1;
+                }
+            }
+            
+            // Si se pincha dentro del canvas, se llama a la funcion
+
+            canvas.addEventListener("mousedown", function (e)
+            {
+                clickear(canvas, e);
+            });
+            
+            // informar al cargar la pagina que permita la animacion
+
+            raf = window.requestAnimationFrame(draw);
+            
+            // Se prepara el minuto de juego
+
+            countDownDate.setMinutes(countDownDate.getMinutes() + 1);
+
+            // funcion que va actualizando segundo a segundo el tiempo restante
+            var x = setInterval(function () {
+
+                var now = new Date().getTime();
+                var distance = countDownDate - now;
+
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                time.innerHTML = minutes + "m " + seconds + "s ";
+
+                if (distance < 0) {
+                    clearInterval(x);
+                    time.innerHTML = "FIN";
+                    fin = true;
+                    canvas.style.display = "none";
+                    boton1.disabled = true;
+                    boton2.disabled = true;
+                }
+            }, 1000);
+
+        </script>
+    </body>   
+</html>
