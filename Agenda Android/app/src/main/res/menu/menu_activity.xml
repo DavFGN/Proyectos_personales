@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+    android:id="@+id/configuration"
+    android:title="@string/Config"
+    />
+    <item
+        android:id="@+id/database"
+        android:title="@string/saveBD"
+        />
+    <item
+        android:id="@+id/closeAppMenu"
+        android:title="@string/closeApp"
+        />
+    <item
+        android:id="@+id/musicB"
+        android:title="@string/music"
+        />
+    <item
+        android:id="@+id/videoM"
+        android:title="@string/video"
+        />
+</menu>
+

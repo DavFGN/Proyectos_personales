@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LISTA DE CONTACTOS</string>
+    <string name="titulo_p">Contact List</string>
+    <string name="cancel">Cancel</string>
+    <string name="tel_obligatory_b">The phone number must always be entered</string>
+    <string name="tel_obligatory_a">"Indicate if it is mandatory to add the telephone"</string>
+    <string name="pro_nombre">Owner\'s name</string>
+</resources>

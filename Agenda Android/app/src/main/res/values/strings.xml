@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">LISTA DE CONTACTOS</string>
+
+    <string name="pass_first">No coinciden las 2 contraseñas insertadas.</string>
+
+    <string name="list">Lista de contactos de</string>
+    <string name="noData">No se ha añadido ningún contacto</string>
+    <string name="add">AÑADIR UN NUEVO CONTACTO</string>
+    <string name="delete">BORRAR TODOS LOS CONTACTOS</string>
+    <string name="query">CONSULTA</string>
+    <string name="call">GUARDAR EN BASE DE DATOS</string>
+    <string name="indicado">No indicado</string>
+    <string name="titulo_p">Lista de contactos</string>
+    <string name="cancel">Cancelar</string>
+
+    <string name="titleAdd">Nuevo contacto</string>
+    <string name="textAdd">Añada un contacto nuevo</string>
+    <string name="name">NOMBRE</string>
+    <string name="phone">TELÉFONO</string>
+
+    <string name="loData">Losing data</string>
+    <string name="Config">Configuración</string>
+    <string name="saveBD">Guardar en la base de datos</string>
+    <string name="closeApp">Cerrar la aplicación</string>
+    <string name="music">Poner música de fondo</string>
+    <string name="video">Poner un vídeo</string>
+
+    <string name="rojo">Rojo</string>
+    <string name="gris">Gris</string>
+    <string name="verde">Verde</string>
+    <string name="tel_obligatory_a">Indicar si es obligatorio añadir el teléfono</string>
+    <string name="tel_obligatory_b">El número de teléfono debe ser siempre introducido</string>
+    <string name="pro_nombre">Nombre del propietario</string>
+
+</resources>

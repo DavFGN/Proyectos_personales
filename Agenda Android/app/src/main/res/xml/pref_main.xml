@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <CheckBoxPreference
+            android:key="checkbox_salir"
+            android:summary="Si quiere que le pregunte si quiere salir de la aplicacion"
+            android:defaultValue="true"
+            android:title="Confirmar la salida del programa" />
+
+        <Preference
+            android:key="interval"
+            android:summary="Cada cierto tiempo mostrará la hora"
+            android:title="Intervalo del reloj" />
+
+        <Preference
+            android:key="chan_pass"
+            android:summary="Cambio de contraseña"
+            android:title="Cambiar contraseña">
+    <intent
+        android:action="android.intent.action.VIEW"
+        android:targetPackage="com.example.david.ejerecup"
+        android:targetClass="com.example.david.ejerecup.ChangePassword"/>
+        </Preference>
+
+        <CheckBoxPreference
+            android:key="checkbox_tel"
+            android:summary="@string/tel_obligatory_b"
+            android:defaultValue="false"
+            android:title="@string/tel_obligatory_a" />
+
+        <ListPreference
+            android:dialogTitle="Color de la ventana principal"
+            android:entries="@array/change_color"
+            android:entryValues="@array/change_color"
+            android:key="list_color"
+            android:defaultValue="Rojo"
+            android:summary="Elija el color para la ventana"
+            android:title="Color de la ventana principal"/>
+
+        <EditTextPreference
+            android:key="chan_name"
+            android:summary="Indica cual es el nombre del dueño de la agenda"
+            android:title="@string/pro_nombre" />
+</PreferenceScreen>
